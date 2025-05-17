@@ -11,12 +11,13 @@ import { cn, stringifyQuery, stringifyUrl } from "@/lib/utils";
 import { Suspense, useEffect, useState } from "react";
 import RadioItems from "@/components/ui/custom/radio/RadioItems";
 import { CustomInput as Input } from "@/components/ui/custom/input";
-import { Search } from "lucide-react";
+import { ChevronDown, Search } from "lucide-react";
 import DataTable from "@/components/ui/data-table";
 import { ColumnDef } from "@tanstack/react-table";
 import { tag } from "@/types";
 import { ITransaction, useGetTransactionQuery } from "@/api/transaction";
 import TransactionDetails from "./TransactionDetails";
+import { DatePicker } from "@/components/ui/custom/date/DatePicker";
 
 const status = [
   { label: "Success", value: "success" },
@@ -199,9 +200,21 @@ const TransactionTable = () => {
                 items={status}
               />
             </PopOver>
+            <DatePicker
+              trigger={
+                <Button variant={"secondary"}>
+                  Date
+                  <ChevronDown />
+                </Button>
+              }
+              value={queryValues.date ? new Date(queryValues.date as string) : undefined}
+              onSelect={(date) =>
+                setQueryValues((prev) => ({ ...prev, date: date?.toISOString() ?? "" }))
+              }
+            />
             <div className="w-full flex justify-end justify-self-end">
               <Input
-                className="w-fit bg-ctm-secondary-50"
+                className="w-fit bg-transparent"
                 slotBefore={<Search className="text-ctm-secondary-300" />}
                 placeholder="Search"
                 value={queryValues.search}
