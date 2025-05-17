@@ -58,7 +58,7 @@ const Product = () => {
             {
               trigger: (
                 <button className="px-4 py-2 text-sm font-medium hover:text-indigo-700">
-                  Reviewing Product
+                  Reviewing Products
                 </button>
               ),
               content: <ReviewProduct />,

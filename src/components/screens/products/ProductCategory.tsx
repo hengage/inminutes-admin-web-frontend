@@ -12,7 +12,6 @@ import { Search } from "lucide-react";
 import DataTable from "@/components/ui/data-table";
 import { ColumnDef } from "@tanstack/react-table";
 import { ICategory, useGetCategoriesQuery } from "@/api/product";
-import PopOver from "@/components/ui/custom/PopOver";
 
 const ProductCategoryTable = () => {
   const router = useRouter();
@@ -65,25 +64,11 @@ const ProductCategoryTable = () => {
     {
       accessorKey: "actions",
       header: () => <span className="whitespace-nowrap font-semibold text-base">Actions</span>,
-      cell: ({ row }) => {
+      cell: () => {
         return (
-          <PopOver className="max-w-[110px]">
-            <div className="flex flex-col justify-center items-center">
-              <Button
-                className="w-[100px] justify-start"
-                variant={"ghost"}
-                onClick={() => router.push(`/category/${row.original._id}`)}
-              >
-                <Icon width={15} height={15} name="eye" />
-                View
-              </Button>
-
-              <Button className="w-[100px] justify-start" variant={"ghost"}>
-                <Icon width={15} height={15} name="trash" />
-                Delete
-              </Button>
-            </div>
-          </PopOver>
+          <Button className="w-[100px] justify-start" variant={"ghost"}>
+            <Icon width={15} height={15} name="trash" />
+          </Button>
         );
       },
     },
@@ -124,7 +109,7 @@ const ProductCategoryTable = () => {
 
           <div className="w-full flex justify-end justify-self-end">
             <Input
-              className="w-fit bg-ctm-secondary-100"
+              className="w-fit bg-transparent"
               slotBefore={<Search className="text-ctm-secondary-300" />}
               placeholder="Search"
               value={queryValues.search}

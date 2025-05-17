@@ -29,7 +29,6 @@ const RadioItems = ({
   showSearchBox,
   searchPlaceholder,
   onSubmit,
-  addButtonText,
   ...props
 }: Omit<React.ComponentProps<typeof RadioGroup>, "onSubmit"> & RadioItemOptionsProps) => {
   const [value, setValue] = useState(props.selectedItem);
@@ -71,9 +70,9 @@ const RadioItems = ({
       </div>
       <div className="border-t border-ctm-secondary-50 p-2 flex justify-between items-center gap-2">
         <PopoverClose>
-          <Button onClick={() => onSubmit?.(value ?? null)} variant={"ctm-primary"}>
+          {/* <Button onClick={() => onSubmit?.(value ?? null)} variant={"ctm-primary"}>
             {addButtonText ?? "Apply"}
-          </Button>
+          </Button> */}
         </PopoverClose>
         <PopoverClose>
           <Button

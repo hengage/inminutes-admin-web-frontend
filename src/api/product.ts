@@ -2,7 +2,7 @@ import https from "@/lib/axios";
 import { QUERY_KEYS } from "@/lib/constants/queryKeys";
 import { stringifyQuery } from "@/lib/utils";
 import { IListItem, IPaginationData } from "@/types";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export interface IProduct {
   _id: string;
@@ -164,10 +164,14 @@ export const useGetReviewingProductsQuery = ({
 };
 
 export const useCreateCategorytMutation = () => {
+  const queryClient = useQueryClient();
   return useMutation<unknown, Error, Partial<ICategory>>({
     mutationFn: async (data) => {
       const response = await https.post("/product/category", data);
       return response.data.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.Categories] });
     },
   });
 };
@@ -176,10 +180,15 @@ export const useCreateCategorytMutation = () => {
  * Hook to update an existing product
  */
 export const useUpdateProductMutation = () => {
+  const queryClient = useQueryClient();
+
   return useMutation<unknown, Error, { productId: string; data: Partial<IProduct> }>({
     mutationFn: async ({ productId, data }) => {
       const response = await https.put(`/product/${productId}`, data);
       return response.data.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.PRODUCTS] });
     },
   });
 };
@@ -188,10 +197,14 @@ export const useUpdateProductMutation = () => {
  * Hook to delete a product
  */
 export const useDeleteProductMutation = () => {
+  const queryClient = useQueryClient();
   return useMutation<unknown, Error, string>({
     mutationFn: async (productId) => {
       const response = await https.delete(`/product/${productId}`);
       return response.data.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.PRODUCTS] });
     },
   });
 };
@@ -200,14 +213,19 @@ export const useDeleteProductMutation = () => {
  * Hook to update product status
  */
 export const useUpdateProductStatusMutation = () => {
+  const queryClient = useQueryClient();
+
   return useMutation<
     unknown,
     Error,
-    { productId: string; status: "Approved" | "Pending" | "Rejected" }
+    { productId: string; status: "approved" | "rejected" | "pending" }
   >({
     mutationFn: async ({ productId, status }) => {
       const response = await https.patch(`/products/${productId}/status`, { status });
       return response.data.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.PRODUCTS] });
     },
   });
 };

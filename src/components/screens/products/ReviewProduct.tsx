@@ -1,20 +1,15 @@
 "use client";
 import { useRouter } from "next/navigation";
-import Tag from "@/components/general/Tag";
-import { Button } from "@/components/ui/button";
 import { Pagination } from "@/components/ui/custom/Pagination";
-import PopOver from "@/components/ui/custom/PopOver";
-import { Icon } from "@/components/ui/Icon";
 import { Refresh2 } from "iconsax-react";
 import useUrlState from "@/hooks/useUrlState";
 import { cn, stringifyUrl } from "@/lib/utils";
 import { Suspense, useEffect, useState } from "react";
-
 import DataTable from "@/components/ui/data-table";
 import { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
-import { tag } from "@/types";
 import { IProduct, useGetReviewingProductsQuery } from "@/api/product";
+import { Button } from "@/components/ui/button";
 
 const ReviewProductTable = () => {
   const router = useRouter();
@@ -68,7 +63,7 @@ const ReviewProductTable = () => {
     },
     {
       accessorKey: "_id",
-      header: () => <span className="whitespace-nowrap font-semibold text-base">ID Number</span>,
+      header: () => <span className="whitespace-nowrap font-semibold text-base">Product ID</span>,
       cell: ({ row }) => (
         <span className="font-normal text-base text-ctm-secondary-200">{row.original._id}</span>
       ),
@@ -104,35 +99,15 @@ const ReviewProductTable = () => {
         );
       },
     },
-    {
-      accessorKey: "status",
-      header: () => <span className="whitespace-nowrap font-semibold text-base">Status</span>,
-      cell: ({ row }) => {
-        return <Tag tag={row.original.status.toLowerCase() as tag} />;
-      },
-    },
+
     {
       accessorKey: "actions",
       header: () => <span className="whitespace-nowrap font-semibold text-base">Actions</span>,
-      cell: ({ row }) => {
+      cell: () => {
         return (
-          <PopOver className="max-w-[110px]">
-            <div className="flex flex-col justify-center items-center">
-              <Button
-                className="w-[100px] justify-start"
-                variant={"ghost"}
-                onClick={() => router.push(`/product/${row.original._id}`)}
-              >
-                <Icon width={15} height={15} name="eye" />
-                View
-              </Button>
-
-              <Button className="w-[100px] justify-start" variant={"ghost"}>
-                <Icon width={15} height={15} name="trash" />
-                Delete
-              </Button>
-            </div>
-          </PopOver>
+          <Button className="border border-blue-700 bg-transparent hover:bg-transparent text-blue-700 rounded-md px-4 py-2">
+            Approve Product
+          </Button>
         );
       },
     },
